@@ -18,7 +18,7 @@ function getAllItems(selectedItems) {
         (selectedItem, index) => {
             const findItem = allItems.find(item => item.id === selectedItem);
             findItem.count = selectedItemsCount[index];
-            findItem.total = findItem.price * findItem.count;
+            findItem.subTotal = findItem.price * findItem.count;
             return findItem;
         })
     return shoppingList;
@@ -32,14 +32,46 @@ function getItemsIdAndCount(selectedItems) {
 }
 
 function hasDiscount(shoppingList) {
-    const loadPromotions = require('./promotions');
-    const promotions = loadPromotions();
+    let hasDiscountType, totalPrice;
+    let [hasDiscountTypeOne, totalPriceTypeOne] = hasDiscountTypeOne(shoppingList);
+    let [hasDiscountTypeTwo, totalPriceTypeTwo] = hasDiscountTypeTwo(shoppingList);
+    if () {
 
-    const totalPrice =
-        return discount;
+    }
+    return [hasDiscountType, totalPrice];
 }
 
-function getTotalPrice
+function getTotalPrice(shoppingList) {
+    let totalPrice = shoppingList.reduce(
+        (prev, cur) => {
+            return prev + cur.subTotal;
+        }, 0);
+    return totalPrice;
+}
+
+function hasDiscountTypeOne(shoppingList) {
+    let totalPrice = getTotalPrice(shoppingList);
+    let hasDiscount = false;
+    if (totalPrice >= 30) {
+        hasDiscount = true;
+        totalPrice = totalPrice - 6;
+    }
+    return [hasDiscount, totalPrice];
+}
+
+function hasDiscountTypeTwo(shoppingList) {
+    const loadPromotions = require('./promotions');
+    const discountItems = loadPromotions()[1].items;
+    let hasDiscount = false;
+    shoppingList.forEach(item => {
+        if (discountItems.indexOf(item.id) !== -1) {
+            item.subTotal *= 0.5;
+            hasDiscount = true;
+        }
+    });
+    let totalPrice = getTotalPrice(shoppingList);
+    return [hasDiscount, totalPrice];
+}
 
 function summaryAllItems(shoppingList, discount) {
     return summary;
@@ -51,7 +83,9 @@ function printAllItems(shoppingList, discount, summary) {
 
 
 let inputs = ["ITEM0001 x 1", "ITEM0013 x 2", "ITEM0022 x 1"];
-// const [selectedItemsID, selectedItemsCount] = getItemsIdAndCount(inputs);
-// console.log(selectedItemsID);
-// console.log(selectedItemsCount);
-bestCharge(inputs);
+var shoppingList = getAllItems(inputs);
+console.log(shoppingList);
+hasDiscountTypeOne(shoppingList)
+hasDiscountTypeTwo(shoppingList)
+
+// bestCharge(inputs);
