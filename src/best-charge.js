@@ -116,3 +116,6 @@ function printAllItems(shoppingList, summary) {
     result += `总计：${summary.totalPrice}元\n===================================`;
     return result;
 }
+
+// let inputs = ["ITEM0001 x 1", "ITEM0013 x 2", "ITEM0022 x 1"];
+// bestCharge(inputs)
